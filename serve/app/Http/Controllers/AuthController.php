@@ -33,23 +33,26 @@ class AuthController extends Controller
     }
 
 
-    public function login(Request $request){
-
+    public function login(Request $request)    {
+        //validate fields
         $attrs = $request->validate([
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed'
+            'email' => 'required|email',
+            'password' => 'required|min:6'
         ]);
 
-        if (!Auth::attempt($attrs)) {
-            return response(['message', 'invalid credentials'], 403);
+        // attempt login
+        if(!Auth::attempt($attrs))
+        {
+            return response([
+                'message' => 'Invalid credentials.'
+            ], 403);
         }
 
+        //return user & token in response
         return response([
             'user' => auth()->user(),
             'token' => auth()->user()->createToken('secret')->plainTextToken
         ], 200);
-
-        
     }
 
     public function logout(){
