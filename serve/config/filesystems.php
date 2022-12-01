@@ -51,7 +51,7 @@ return [
             'visibility' => 'public',
         ],
 
-        'profiles' =>[
+        'posts' =>[
             'driver' => 'local',
             'root' => storage_path('app/public/posts'),
             'url' => env('APP_URL').'/storage',
