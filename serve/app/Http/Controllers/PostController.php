@@ -8,15 +8,16 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return response([
-            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments','likes')
+            'posts' => Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')
             ->with('likes', function($like){
                 return $like->where('user_id', auth()->user()->id)
-                ->select('id', 'user_id', 'post_id')->get();
+                    ->select('id', 'user_id', 'post_id')->get();
             })
             ->get()
-        ],200);
+        ], 200);
     }
 
     public function show($id)
