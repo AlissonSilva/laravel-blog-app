@@ -17,10 +17,10 @@ Future<ApiResponse> getPosts() async {
 
     switch (response.statusCode) {
       case 200:
-        // apiResponse.data = User.fromJson(jsonDecode(response.body));
-        apiResponse.data = jsonDecode(response.body)['posts']
+        apiResponse.data = (jsonDecode(response.body)["posts"] as List)
             .map((p) => Post.fromJson(p))
             .toList();
+
         apiResponse.data as List<dynamic>;
         break;
       case 401:
