@@ -1,5 +1,6 @@
 import 'package:app/constant.dart';
 import 'package:app/models/api_response.dart';
+import 'package:app/models/post.dart';
 import 'package:app/screens/login.dart';
 import 'package:app/services/post_services.dart';
 import 'package:app/services/user_service.dart';
@@ -8,7 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class PostForm extends StatefulWidget {
-  const PostForm({super.key});
+  final Post? post;
+  final String? title;
+
+  PostForm({this.post, this.title});
+  // const PostForm({super.key});
 
   @override
   State<PostForm> createState() => _PostFormState();
@@ -45,7 +50,25 @@ class _PostFormState extends State<PostForm> {
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('${response.error}')));
+      setState(() {
+        _loading = !_loading;
+      });
+    }
+  }
 
+  void _editPost(int postId) async {
+    ApiResponse response = await editPosts(postId, _txtControllerBody.text);
+    if (response.error == null) {
+      Navigator.of(context).pop();
+    } else if (response.error == unauthorized) {
+      logout().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false)
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('${response.error}')));
       setState(() {
         _loading = !_loading;
       });
@@ -53,10 +76,18 @@ class _PostFormState extends State<PostForm> {
   }
 
   @override
+  void initState() {
+    if (widget.post != null) {
+      _txtControllerBody.text = widget.post!.body ?? '';
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add new post'),
+        title: Text('${widget.title}'),
       ),
       body: _loading
           ? Center(
@@ -64,28 +95,30 @@ class _PostFormState extends State<PostForm> {
             )
           : ListView(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 200,
-                  decoration: BoxDecoration(
-                      image: _imageFile == null
-                          ? null
-                          : DecorationImage(
-                              image: FileImage(_imageFile ?? File('')),
-                              fit: BoxFit.cover)),
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.image,
-                        size: 50,
-                        color: Colors.black38,
+                widget.post != null
+                    ? SizedBox()
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 200,
+                        decoration: BoxDecoration(
+                            image: _imageFile == null
+                                ? null
+                                : DecorationImage(
+                                    image: FileImage(_imageFile ?? File('')),
+                                    fit: BoxFit.cover)),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.image,
+                              size: 50,
+                              color: Colors.black38,
+                            ),
+                            onPressed: () {
+                              getImage();
+                            },
+                          ),
+                        ),
                       ),
-                      onPressed: () {
-                        getImage();
-                      },
-                    ),
-                  ),
-                ),
                 Form(
                   key: _formKey,
                   child: Padding(
@@ -106,12 +139,17 @@ class _PostFormState extends State<PostForm> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: kTextButton('Post', () {
+                  child:
+                      kTextButton(widget.post == null ? 'Create' : 'Alter', () {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
                         _loading = !_loading;
                       });
-                      _createPost();
+                      if (widget.post == null) {
+                        _createPost();
+                      } else {
+                        _editPost(widget.post!.id ?? 0);
+                      }
                     }
                   }),
                 )

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:app/constant.dart';
 import 'package:app/models/api_response.dart';
 import 'package:app/models/post.dart';
+import 'package:app/screens/comment_screen.dart';
 import 'package:app/screens/login.dart';
+import 'package:app/screens/post_form.dart';
 import 'package:app/services/post_services.dart';
 import 'package:app/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,38 @@ class _PostScreenState extends State<PostScreen> {
         _postList = response.data as List<dynamic>;
         _loading = _loading ? !_loading : _loading;
       });
+    } else if (response.error == unauthorized) {
+      logout().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false)
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('${response.error}')));
+    }
+  }
+
+  void _handleDeletePost(int postId) async {
+    ApiResponse response = await deletePosts(postId);
+    if (response.error == null) {
+      retrievePosts();
+    } else if (response.error == unauthorized) {
+      logout().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false)
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('${response.error}')));
+    }
+  }
+
+  void _handlePostLikeDislike(int postId) async {
+    ApiResponse response = await likeUnlikePost(postId);
+    if (response.error == null) {
+      retrievePosts();
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
@@ -88,7 +122,7 @@ class _PostScreenState extends State<PostScreen> {
                               Text(
                                 '${post.user!.name}',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 17),
+                                    fontWeight: FontWeight.w600, fontSize: 14),
                               )
                             ],
                           ),
@@ -114,9 +148,14 @@ class _PostScreenState extends State<PostScreen> {
                                 ],
                                 onSelected: (value) {
                                   if (value == 'edit') {
-                                    // edit
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => PostForm(
+                                                  title: 'Edit Post',
+                                                  post: post,
+                                                )));
                                   } else {
-                                    // delete
+                                    _handleDeletePost(post.id ?? 0);
                                   }
                                 },
                               )
@@ -126,7 +165,12 @@ class _PostScreenState extends State<PostScreen> {
                     SizedBox(
                       height: 12,
                     ),
-                    Text('${post.body}'),
+                    Text(
+                      '${post.body}',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w300, fontSize: 16),
+                      textAlign: TextAlign.left,
+                    ),
                     post.image != null
                         ? Container(
                             width: MediaQuery.of(context).size.width,
@@ -151,15 +195,21 @@ class _PostScreenState extends State<PostScreen> {
                                 : Icons.favorite_outline,
                             post.selfLiked == true
                                 ? Colors.red
-                                : Colors.black38,
-                            () {}),
+                                : Colors.black38, () {
+                          _handlePostLikeDislike(post.id ?? 0);
+                        }),
                         Container(
                           height: 25,
                           width: 0.5,
                           color: Colors.black38,
                         ),
                         kLikeAndComment(post.commentsCount ?? 0,
-                            Icons.sms_outlined, Colors.black54, () {}),
+                            Icons.sms_outlined, Colors.black54, () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CommentScreen(
+                                    postId: post.id,
+                                  )));
+                        }),
                       ],
                     ),
                     Container(

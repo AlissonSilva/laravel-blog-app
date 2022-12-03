@@ -35,8 +35,10 @@ class _HomeState extends State<Home> {
       body: currentIndex == 0 ? PostScreen() : Profile(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => PostForm()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PostForm(
+                    title: 'Add new post',
+                  )));
         },
         child: Icon(Icons.add),
       ),
