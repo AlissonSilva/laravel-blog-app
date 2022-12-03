@@ -73,8 +73,8 @@ class CommentController extends Controller
             'comment' => $attrs['comment']
         ]);
 
-        return resonse([
-            'message' => 'comment update'
+        return response([
+            'message' => 'Comment updated.'
         ], 200);
     }
 
@@ -82,22 +82,24 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
 
-        if(!$comment){
+        if(!$comment)
+        {
             return response([
                 'message' => 'Comment not found.'
-            ],403);
+            ], 403);
         }
 
-        if($comment->user_id != auth()->user()->id){
+        if($comment->user_id != auth()->user()->id)
+        {
             return response([
-                'message' => 'Permission denid.'
+                'message' => 'Permission denied.'
             ], 403);
         }
 
         $comment->delete();
 
         return response([
-            'message', 'Comment delete'
-        ],200);
+            'message' => 'Comment deleted.'
+        ], 200);
     }
 }
