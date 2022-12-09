@@ -1,5 +1,16 @@
 # Blog laravel and flutter
 
+## Banco de dados
+
+Definir o tipo de banco e o nome do banco de dados no arquivo .env na pasta server.
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=blogapp
+DB_USERNAME=root
+DB_PASSWORD=
+
 ## Server
 
 Instalar Laravel
