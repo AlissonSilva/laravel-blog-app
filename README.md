@@ -5,6 +5,8 @@
 Instalar Laravel
 composer global require laravel/installer
 
+php artisan key:generate
+
 Executar as migration
 
 php artisan migrate
