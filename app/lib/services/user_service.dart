@@ -73,10 +73,13 @@ Future<ApiResponse> register(String name, String email, String password) async {
 // Update
 Future<ApiResponse> updateUser(String name, String? image) async {
   ApiResponse apiResponse = ApiResponse();
-
+  String token = await getToken();
   try {
     final response = await http.put(Uri.parse(userURL),
-        headers: {'Accept': 'application/json'},
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
         body: image == null ? {'name': name} : {'name': name, 'image': image});
 
     switch (response.statusCode) {
