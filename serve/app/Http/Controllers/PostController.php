@@ -77,6 +77,26 @@ class PostController extends Controller
         ],200);
     }
 
+    /**
+     * Delete Post
+     * @OA\Delete (
+     *     path="/api/post/{id}",
+     *     tags={"Post"},
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="msg", type="string", example="Post deleted.")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $post = Post::find($id);

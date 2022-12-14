@@ -8,7 +8,68 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    
+
+    /**
+     * Register
+     * @OA\Post (
+     *     path="/api/register/",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="name",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="password"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password_confirmation",
+     *                          type="password"
+     *                      )
+     *                 ),
+     *                 example={
+     *                     "name":"Admin",
+     *                     "email":"admin@admin.com",
+     *                     "password":"123456",
+     *                     "password_confirmation":"123456"
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *
+     *              @OA\Property(property="user", type="object",
+     *                  @OA\Property(property="id", type="number", example=1),
+     *                  @OA\Property(property="name", type="string", example="Admin"),
+     *                  @OA\Property(property="email", type="string", example="admin@admin.com"),
+     *                  @OA\Property(property="created_at", type="string", example="2022-12-11T09:25:53.000000Z"),
+     *                  @OA\Property(property="updated_at", type="string", example="2022-12-11T09:25:53.000000Z"),
+     *              ),
+     *              @OA\Property(property="token", type="string", example="2|RlmF3V1BwHtXErI9md4OBu9ZvyjNmtCjt1Mnfv4f"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Content",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The email has already been taken."),
+     *          )
+     *      )
+     * )
+     */
 
     public function register(Request $request){
 
@@ -33,6 +94,58 @@ class AuthController extends Controller
     }
 
 
+   /**
+     * Login
+     * @OA\Post (
+     *     path="/api/login/",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="password"
+     *                      )
+     *                 ),
+     *                 example={
+     *                     "email":"admin@admin.com",
+     *                     "password":"123456"
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *
+     *              @OA\Property(property="user", type="object",
+     *                  @OA\Property(property="id", type="number", example=1),
+     *                  @OA\Property(property="name", type="string", example="Admin"),
+     *                  @OA\Property(property="email", type="string", example="admin@admin.com"),
+     *                  @OA\Property(property="image", type="string", example="null"),
+     *                  @OA\Property(property="created_at", type="string", example="2022-12-11T09:25:53.000000Z"),
+     *                  @OA\Property(property="updated_at", type="string", example="2022-12-11T09:25:53.000000Z"),
+     *              ),
+     *              @OA\Property(property="token", type="string", example="2|RlmF3V1BwHtXErI9md4OBu9ZvyjNmtCjt1Mnfv4f"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Invalid credentials."),
+     *          )
+     *      )
+     * )
+     */
     public function login(Request $request)    {
         //validate fields
         $attrs = $request->validate([
@@ -55,12 +168,42 @@ class AuthController extends Controller
         ], 200);
     }
 
+     /**
+     * Logout
+     * @OA\Post (
+     *     path="/api/logout/",
+     *     tags={"User"},
+     *     security={{"bearer_token": {}}},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *                  @OA\Property(property="message", type="string", example="Logout success.")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *          )
+     *      )
+     * )
+     */
+
     public function logout(){
         auth()->user()->tokens()->delete();
         return response([
             'message' => 'Logout success.'
         ],200);
     }
+
+
 
     public function user(){
         return response([

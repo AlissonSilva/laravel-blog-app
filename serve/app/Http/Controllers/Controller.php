@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\URL;
 
 class Controller extends BaseController
 {
+    /**
+     * @OA\OpenApi(
+     *
+     *     @OA\Info(
+     *         version="1.0",
+     *         title="Laravel Blog App",
+     *         description="Blog with back-end laravel and front-end flutter",
+     *     )
+     *
+     * )
+     */
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function saveImage($image, $path = 'public')
