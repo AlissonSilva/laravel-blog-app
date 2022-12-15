@@ -17,8 +17,7 @@ class Controller extends BaseController
      *         version="1.0",
      *         title="Laravel Blog App",
      *         description="Blog with back-end laravel and front-end flutter",
-     *     )
-     *
+     *     ),
      * )
      */
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

@@ -125,7 +125,6 @@ class AuthController extends Controller
      *          response=200,
      *          description="success",
      *          @OA\JsonContent(
-     *
      *              @OA\Property(property="user", type="object",
      *                  @OA\Property(property="id", type="number", example=1),
      *                  @OA\Property(property="name", type="string", example="Admin"),
@@ -173,7 +172,7 @@ class AuthController extends Controller
      * @OA\Post (
      *     path="/api/logout/",
      *     tags={"User"},
-     *     security={{"bearer_token": {}}},
+     *     security={{"Authorization": {}}},
      *     @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json"
@@ -204,6 +203,29 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Get Detail User
+     * @OA\Get (
+     *     path="/api/user/",
+     *     tags={"User"},
+     *     security={{"Authorization": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="user", type="object",
+     *                  @OA\Property(property="id", type="number", example=1),
+     *                  @OA\Property(property="name", type="string", example="Admin"),
+     *                  @OA\Property(property="email", type="string", example="admin@admin.com"),
+     *                  @OA\Property(property="image", type="string", example="null"),
+     *                  @OA\Property(property="email_verified_at", type="string", example="null"),
+     *                  @OA\Property(property="created_at", type="string", example="2022-12-11T09:25:53.000000Z"),
+     *                  @OA\Property(property="updated_at", type="string", example="2022-12-11T09:25:53.000000Z"),
+     *              )
+     *          )
+     *     )
+     * )
+     */
 
     public function user(){
         return response([
@@ -211,6 +233,62 @@ class AuthController extends Controller
         ],200);
     }
 
+     /**
+     * Update
+     * @OA\Put (
+     *     path="/api/user/",
+     *     tags={"User"},
+     *     security={{"Authorization": {}}},
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="image",
+     *         required=false,
+     *         @OA\Schema(type="file")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         @OA\Schema(
+     *             @OA\Property(
+     *                  type="object",
+     *                  @OA\Property(
+     *                       property="name",
+     *                       type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                       property="image",
+     *                       type="file"
+     *                  )
+     *                 ),
+     *             example={
+     *                 "name":"Admin",
+     *                 "image":"null"
+     *              }
+     *            )
+     *         ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *                  @OA\Property(property="message", type="string", example="User updated.")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *          )
+     *      )
+     * )
+     */
     public function update(Request $request)
     {
         $attrs = $request->validate([
