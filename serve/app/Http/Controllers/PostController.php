@@ -82,11 +82,12 @@ class PostController extends Controller
      * @OA\Delete (
      *     path="/api/post/{id}",
      *     tags={"Post"},
+     *     security={{"Authorization": {}}},
      *     @OA\Parameter(
      *         in="path",
      *         name="id",
      *         required=true,
-     *         @OA\Schema(type="string")
+     *         @OA\Schema(type="int")
      *     ),
      *     @OA\Response(
      *         response=200,
