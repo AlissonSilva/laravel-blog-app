@@ -26,6 +26,18 @@ Start serve com ip do servidor
 
 php artisan serve --host=192.168.1.99
 
+### Config Swagger no servidor
+
+composer require "darkaonline/l5-swagger"
+
+php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+
+php artisan migrate:fresh --seed
+
+Sempre que realizar uma alteração no Swagger, é necessário realizar o comando l5-swagger:generate, pois assim vai publicar as alterações.
+
+php artisan l5-swagger:generate
+
 ## App
 
 Definir o ip do server dentro \app\lib\constant.dart na linha 4.
