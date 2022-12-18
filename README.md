@@ -38,6 +38,10 @@ Sempre que realizar uma alteração no Swagger, é necessário realizar o comand
 
 php artisan l5-swagger:generate
 
+Acesse a página /api/documentation
+
+http://192.168.1.99:8000/api/documentation
+
 ## App
 
 Definir o ip do server dentro \app\lib\constant.dart na linha 4.
