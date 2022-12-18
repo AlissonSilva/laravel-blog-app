@@ -38,7 +38,11 @@ Sempre que realizar uma alteração no Swagger, é necessário realizar o comand
 
 php artisan l5-swagger:generate
 
-Acesse a página /api/documentation
+Acesse a página /api/documentation ou verificar o 'routes' em '/config/l5-swagger.php'
+
+ 'routes' => [
+       'api' => 'api/documentation',
+  ],
 
 http://192.168.1.99:8000/api/documentation
 
