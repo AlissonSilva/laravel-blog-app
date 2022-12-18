@@ -410,13 +410,411 @@
                 ]
             }
         },
-        "/api/post/{id}": {
+        "/api/posts/": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Get post",
+                "operationId": "4b9595e240873ad2074cc64a5eac9430",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "posts": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "body": {
+                                                    "type": "string",
+                                                    "example": "First Post!"
+                                                },
+                                                "image": {
+                                                    "type": "files",
+                                                    "example": null
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2022-12-11T09:25:53.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2022-12-11T09:25:53.000000Z"
+                                                },
+                                                "comments_count": {
+                                                    "type": "number",
+                                                    "example": 0
+                                                },
+                                                "likes_count": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Admin"
+                                                        },
+                                                        "image": {
+                                                            "type": "files",
+                                                            "example": null
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "likes": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number",
+                                                                "example": 1
+                                                            },
+                                                            "user_id": {
+                                                                "type": "number",
+                                                                "example": 1
+                                                            },
+                                                            "post_id": {
+                                                                "type": "number",
+                                                                "example": 1
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Register new post",
+                "operationId": "faed8e2199b92cf5a4bf99603b82b681",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "body": {
+                                                "type": "string"
+                                            },
+                                            "image": {
+                                                "type": "file"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "body": "First Post!",
+                                    "image": null
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post created"
+                                        },
+                                        "post": {
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string",
+                                                    "example": "First Post!"
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "image": {
+                                                    "type": "files",
+                                                    "example": null
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2022-12-18T14:57:47.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2022-12-18T14:57:47.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        },
+        "/api/posts/{id}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Get unique post",
+                "operationId": "b0f9d92879218f68a376b6edc6467c67",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "post": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": 2
+                                                    },
+                                                    "user_id": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    },
+                                                    "body": {
+                                                        "type": "string",
+                                                        "example": "First Post!"
+                                                    },
+                                                    "image": {
+                                                        "type": "files",
+                                                        "example": null
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-11T09:25:53.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-11T09:25:53.000000Z"
+                                                    },
+                                                    "comments_count": {
+                                                        "type": "number",
+                                                        "example": 0
+                                                    },
+                                                    "likes_count": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Update post",
+                "operationId": "929614537d76a081a92170a41ed3bdb3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "body": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "body": "First post! Show update!"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post updated"
+                                        },
+                                        "post": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "user_id": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                },
+                                                "body": {
+                                                    "type": "string",
+                                                    "example": "First post! Show update!"
+                                                },
+                                                "image": {
+                                                    "type": "files",
+                                                    "example": null
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2022-12-18T14:57:47.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2022-12-18T15:07:12.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "Post"
                 ],
-                "summary": "Delete Post",
-                "operationId": "6d25b4d3f1749560f4d0d0ae67e41858",
+                "summary": "Delete post",
+                "operationId": "fad1726bd24cd459fc1525b67985df39",
                 "parameters": [
                     {
                         "name": "id",
