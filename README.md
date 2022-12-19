@@ -4,16 +4,16 @@
 
 Definir o tipo de banco e o nome do banco de dados no arquivo .env na pasta server.
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=blogapp
-DB_USERNAME=root
-DB_PASSWORD=
+DB_CONNECTION=mysql<br>
+DB_HOST=127.0.0.1<br>
+DB_PORT=3306<br>
+DB_DATABASE=blogapp<br>
+DB_USERNAME=root<br>
+DB_PASSWORD=<br>
 
 ## Server
 
-Instalar Laravel
+Instalar Laravel <br>
 composer global require laravel/installer
 
 php artisan key:generate
